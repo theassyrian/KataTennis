@@ -21,7 +21,7 @@ namespace KataTennis
 
         public void PromoteScore(Player Player)
         {
-
+            
         }
 
         private bool IsPlayerA(Player player) => player == Player.A;
