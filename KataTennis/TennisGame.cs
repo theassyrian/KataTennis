@@ -23,26 +23,24 @@ namespace KataTennis
 
         public void PromoteScore(Player player)
         {
-            var score = GetPlayerScore(player);
-            
-            if (IsFinishing(score))
+            if (IsFinishing(player))
             {
-                PromoteFinishingScore(player, score);
+                PromoteInFinishingStage(player);
             }
             else
             {
-                SetPlayerScore(player, score + 1);
+                PromoteInRegularStage(player);
             }
         }
 
-        private void PromoteFinishingScore(Player player, Score playerScore)
+        void PromoteInFinishingStage(Player player)
         {
-            var otherPlayerScore = GetOtherPlayerScore(player);
+            var otherPlayer = GetOtherPlayer(player);
 
-            if (HasNoAdvantage(playerScore) && IsFinishing(otherPlayerScore))
+            if (!IsFinishingWithAdvantage(player) && IsFinishing(otherPlayer))
             {
                 SetPlayerScore(player, Score.FortyWithAdvantage);
-                SetOtherPlayerScore(player, Score.Forty);
+                SetPlayerScore(otherPlayer, Score.Forty);
             }
             else
             {
@@ -50,28 +48,22 @@ namespace KataTennis
             }
         }
 
-        private Score GetPlayerScore(Player player) => GetScore(() => player == Player.A);
+        void PromoteInRegularStage(Player player) => SetPlayerScore(player, GetPlayerScore(player) + 1);
 
-        private Score GetOtherPlayerScore(Player player) => GetScore(() => player != Player.A);
+        Player GetOtherPlayer(Player player) => player != Player.A ? Player.A : Player.B;
 
-        private Score GetScore(Func<bool> isPlayerA) => isPlayerA() ? _score.PlayerA : _score.PlayerB;
-        
-        private void SetPlayerScore(Player player, int score) => SetPlayerScore(player, (Score)score);
+        Score GetPlayerScore(Player player) => player == Player.A ? _score.PlayerA : _score.PlayerB;
 
-        private void SetPlayerScore(Player player, Score score) => SetScore(() => player == Player.A, score);
-
-        private void SetOtherPlayerScore(Player player, Score score) => SetScore(() => player != Player.A, score);
-
-        private void SetScore(Func<bool> isPlayerA, Score score)
+        void SetPlayerScore(Player player, Score score)
         {
-            if(isPlayerA())
+            if(player == Player.A)
                 _score.PlayerA = score;
             else
                 _score.PlayerB = score;
         }
 
-        private bool IsFinishing(Score score) => score >= Score.Forty;
+        bool IsFinishingWithAdvantage(Player player) => GetPlayerScore(player) >= Score.FortyWithAdvantage;
 
-        private bool HasNoAdvantage(Score score) => score != Score.FortyWithAdvantage;
+        bool IsFinishing(Player player) => GetPlayerScore(player) >= Score.Forty;
     }
 }
