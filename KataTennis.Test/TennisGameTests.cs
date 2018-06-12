@@ -74,5 +74,47 @@ namespace KataTennis.Test
             var actualScore = game.GetScore(Player.A);
             Assert.Equal(expected, actualScore);
         }
+        
+        [Fact]
+        public void PromoteScore_GameInFortyFortyState_PromotesPlayerToFortyWithAdvantageState()
+        {
+            var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.Forty);
+
+            game.PromoteScore(Player.A);
+
+            var playerAScore = game.GetScore(Player.A);
+            var playerBScore = game.GetScore(Player.B);
+
+            Assert.Equal(playerAScore, Score.FortyWithAdvantage);
+            Assert.Equal(playerBScore, Score.Forty);
+        }
+        
+        [Fact]
+        public void PromoteScore_GameInFortyFortyWithAdvantageState_SwitchesPlayerState()
+        {
+            var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.FortyWithAdvantage);
+
+            game.PromoteScore(Player.A);
+
+            var playerAScore = game.GetScore(Player.A);
+            var playerBScore = game.GetScore(Player.B);
+
+            Assert.Equal(playerAScore, Score.FortyWithAdvantage);
+            Assert.Equal(playerBScore, Score.Forty);
+        }
+        
+        [Fact]
+        public void PromoteScore_GameInFortyWithAdvantageFortyState_PromotesPlayerToWonState()
+        {
+            var game = TestGameFactory.Create(playerA: Score.FortyWithAdvantage, playerB: Score.Forty);
+
+            game.PromoteScore(Player.A);
+
+            var playerAScore = game.GetScore(Player.A);
+            var playerBScore = game.GetScore(Player.B);
+
+            Assert.Equal(playerAScore, Score.Won);
+            Assert.Equal(playerBScore, Score.Forty);
+        }
     }
 }
