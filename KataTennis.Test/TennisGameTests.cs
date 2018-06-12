@@ -31,5 +31,48 @@ namespace KataTennis.Test
             actualScore = game.GetScore(Player.B);
             Assert.Equal(playerB, actualScore);
         }
+        
+        [Fact]
+        public void PromoteScore_GameInInitialState_CorrectlyPromotesPlayerAScore()
+        {
+            var game = TestGameFactory.CreateDefault();
+
+            game.PromoteScore(Player.A);
+
+            var playerAScore = game.GetScore(Player.A);
+            var playerBScore = game.GetScore(Player.B);
+
+            Assert.Equal(playerAScore, Score.Fifteen);
+            Assert.Equal(playerBScore, Score.Love);
+        }
+        
+        [Fact]
+        public void PromoteScore_GameInInitialState_CorrectlyPromotesPlayerBScore()
+        {
+            var game = TestGameFactory.CreateDefault();
+
+            game.PromoteScore(Player.B);
+
+            var playerAScore = game.GetScore(Player.A);
+            var playerBScore = game.GetScore(Player.B);
+
+            Assert.Equal(playerAScore, Score.Love);
+            Assert.Equal(playerBScore, Score.Fifteen);
+        }
+        
+        [Theory]
+        [InlineData(Score.Love, Score.Fifteen)]
+        [InlineData(Score.Fifteen, Score.Thirty)]
+        [InlineData(Score.Thirty, Score.Forty)]
+        [InlineData(Score.Forty, Score.Won)]
+        public void PromoteScore_GameInInlineDataState_CorrectlyFollowScoreSequence(Score init, Score expected)
+        {
+            var game = TestGameFactory.Create(playerA: init);
+            
+            game.PromoteScore(Player.A);
+
+            var actualScore = game.GetScore(Player.A);
+            Assert.Equal(expected, actualScore);
+        }
     }
 }
