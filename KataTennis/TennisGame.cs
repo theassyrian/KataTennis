@@ -14,14 +14,16 @@ namespace KataTennis
             _state = state;
         }
 
-        public Score GetScore(Player Player)
+        public Score GetScore(Player player) 
         {
-            return Score.Love;
+            return IsPlayerA(player) ? _state.PlayerA : _state.PlayerB;
         }
 
         public void PromoteScore(Player Player)
         {
-            
+
         }
+
+        private bool IsPlayerA(Player player) => player == Player.A;
     }
 }
