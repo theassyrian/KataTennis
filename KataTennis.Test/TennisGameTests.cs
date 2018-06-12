@@ -6,7 +6,7 @@ namespace KataTennis.Test
     public class TennisGameTest
     {
         [Fact]
-        public void GetScore_GameInInitialState_ReturnLoveForAllPlayers()
+        public void GetScore_GameInInitialState_GetsLoveForEveryone()
         {
             var game = TestGameFactory.CreateDefault();
 
@@ -21,7 +21,7 @@ namespace KataTennis.Test
         [InlineData(Score.Fifteen, Score.Forty)]
         [InlineData(Score.Love, Score.Thirty)]
         [InlineData(Score.Forty, Score.FortyWithAdvantage)]
-        public void GetScore_PlayerScoreFromData_ReturnCorrectly(Score playerA, Score playerB)
+        public void GetScore_GameInInlineDataState_GetsInlineDatatState(Score playerA, Score playerB)
         {
             var game = TestGameFactory.Create(playerA: playerA, playerB: playerB);
 
@@ -33,7 +33,7 @@ namespace KataTennis.Test
         }
         
         [Fact]
-        public void PromoteScore_GameInInitialState_CorrectlyPromotesPlayerAScore()
+        public void PromoteScore_GameInInitialState_PromotesPlayerAScore()
         {
             var game = TestGameFactory.CreateDefault();
 
@@ -47,7 +47,7 @@ namespace KataTennis.Test
         }
         
         [Fact]
-        public void PromoteScore_GameInInitialState_CorrectlyPromotesPlayerBScore()
+        public void PromoteScore_GameInInitialState_PromotesPlayerBScore()
         {
             var game = TestGameFactory.CreateDefault();
 
@@ -65,7 +65,7 @@ namespace KataTennis.Test
         [InlineData(Score.Fifteen, Score.Thirty)]
         [InlineData(Score.Thirty, Score.Forty)]
         [InlineData(Score.Forty, Score.Won)]
-        public void PromoteScore_GameInInlineDataState_CorrectlyFollowScoreSequence(Score init, Score expected)
+        public void PromoteScore_GameInInlineDataState_FollowsScoreSequence(Score init, Score expected)
         {
             var game = TestGameFactory.Create(playerA: init);
             
