@@ -17,6 +17,8 @@ namespace KataTennis
             _score = new TennisGameScore(score);
         }
 
+        public override string ToString() => $"Player A: {_score.PlayerA} - Player B: {_score.PlayerB}";
+
         public TennisGameScore GetGameScore() => new TennisGameScore(_score);
 
         public void PromoteScore(Player player)
