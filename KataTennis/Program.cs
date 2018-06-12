@@ -11,6 +11,8 @@ namespace KataTennis
         void SimulateGame()
         {
             var game = new TennisGame();
+            
+            Console.WriteLine(game);
 
             for (var score = game.GetGameScore(); 
                 score.PlayerA != Score.Won && score.PlayerB != Score.Won;
