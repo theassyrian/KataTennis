@@ -8,7 +8,7 @@ namespace KataTennis.Test
         [Fact]
         public void GetScore_GameInInitialState_ReturnLoveForAllPlayers()
         {
-            var game = new TennisGame();
+            var game = TestGameFactory.CreateDefault();
 
             var playerAScore = game.GetScore(Player.A);
             Assert.Equal(Score.Love, playerAScore);
@@ -23,26 +23,13 @@ namespace KataTennis.Test
         [InlineData(Score.Forty, Score.FortyWithAdvantage)]
         public void GetScore_PlayerScoreFromData_ReturnCorrectly(Score playerA, Score playerB)
         {
-            var game = CreateGame(playerA: playerA, playerB: playerB);
+            var game = TestGameFactory.Create(playerA: playerA, playerB: playerB);
 
             var actualScore = game.GetScore(Player.A);
             Assert.Equal(playerA, actualScore);
 
             actualScore = game.GetScore(Player.B);
             Assert.Equal(playerB, actualScore);
-        }
-
-        public TennisGame CreateGame(Score playerA = Score.Love, Score playerB = Score.Love)
-        {
-            var state = new TennisGameState
-            {
-                PlayerA = playerA,
-                PlayerB = playerB
-            };
-
-            var game = new TennisGame(state);
-
-            return game;
         }
     }
 }
