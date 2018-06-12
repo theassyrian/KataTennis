@@ -11,13 +11,13 @@ namespace KataTennis.Test
 
         public static TennisGame Create(Score playerA = Score.Love, Score playerB = Score.Love)
         {
-            var state = new TennisGameState
+            var score = new TennisGameScore
             {
                 PlayerA = playerA,
                 PlayerB = playerB
             };
 
-            var game = new TennisGame(state);
+            var game = new TennisGame(score);
 
             return game;
         }

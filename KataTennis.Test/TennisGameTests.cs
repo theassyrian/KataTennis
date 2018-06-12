@@ -9,12 +9,11 @@ namespace KataTennis.Test
         public void GetScore_GameInInitialState_GetsLoveForEveryone()
         {
             var game = TestGameFactory.CreateDefault();
+            
+            var score = game.GetGameScore();
 
-            var playerAScore = game.GetScore(Player.A);
-            Assert.Equal(Score.Love, playerAScore);
-
-            var playerBScore = game.GetScore(Player.B);
-            Assert.Equal(Score.Love, playerBScore);
+            Assert.Equal(Score.Love, score.PlayerA);
+            Assert.Equal(Score.Love, score.PlayerB);
         }
         
         [Theory]
@@ -25,11 +24,10 @@ namespace KataTennis.Test
         {
             var game = TestGameFactory.Create(playerA: playerA, playerB: playerB);
 
-            var actualScore = game.GetScore(Player.A);
-            Assert.Equal(playerA, actualScore);
-
-            actualScore = game.GetScore(Player.B);
-            Assert.Equal(playerB, actualScore);
+            var score = game.GetGameScore();
+            
+            Assert.Equal(playerA, score.PlayerA);
+            Assert.Equal(playerB, score.PlayerB);
         }
         
         [Fact]
@@ -39,11 +37,9 @@ namespace KataTennis.Test
 
             game.PromoteScore(Player.A);
 
-            var playerAScore = game.GetScore(Player.A);
-            var playerBScore = game.GetScore(Player.B);
-
-            Assert.Equal(Score.Fifteen, playerAScore);
-            Assert.Equal(Score.Love, playerBScore);
+            var score = game.GetGameScore();
+            Assert.Equal(Score.Fifteen, score.PlayerA);
+            Assert.Equal(Score.Love, score.PlayerB);
         }
         
         [Fact]
@@ -53,11 +49,9 @@ namespace KataTennis.Test
 
             game.PromoteScore(Player.B);
 
-            var playerAScore = game.GetScore(Player.A);
-            var playerBScore = game.GetScore(Player.B);
-
-            Assert.Equal(Score.Love, playerAScore);
-            Assert.Equal(Score.Fifteen, playerBScore);
+            var score = game.GetGameScore();
+            Assert.Equal(Score.Love, score.PlayerA);
+            Assert.Equal(Score.Fifteen, score.PlayerB);
         }
         
         [Theory]
@@ -71,8 +65,8 @@ namespace KataTennis.Test
             
             game.PromoteScore(Player.A);
 
-            var actualScore = game.GetScore(Player.A);
-            Assert.Equal(expected, actualScore);
+            var score = game.GetGameScore();
+            Assert.Equal(expected, score.PlayerA);
         }
         
         [Fact]
@@ -82,11 +76,9 @@ namespace KataTennis.Test
 
             game.PromoteScore(Player.A);
 
-            var playerAScore = game.GetScore(Player.A);
-            var playerBScore = game.GetScore(Player.B);
-
-            Assert.Equal(Score.FortyWithAdvantage, playerAScore);
-            Assert.Equal(Score.Forty, playerBScore);
+            var score = game.GetGameScore();
+            Assert.Equal(Score.FortyWithAdvantage, score.PlayerA);
+            Assert.Equal(Score.Forty, score.PlayerB);
         }
         
         [Fact]
@@ -96,11 +88,9 @@ namespace KataTennis.Test
 
             game.PromoteScore(Player.A);
 
-            var playerAScore = game.GetScore(Player.A);
-            var playerBScore = game.GetScore(Player.B);
-
-            Assert.Equal(Score.FortyWithAdvantage, playerAScore);
-            Assert.Equal(Score.Forty, playerBScore);
+            var score = game.GetGameScore();
+            Assert.Equal(Score.FortyWithAdvantage, score.PlayerA);
+            Assert.Equal(Score.Forty, score.PlayerB);
         }
         
         [Fact]
@@ -110,11 +100,9 @@ namespace KataTennis.Test
 
             game.PromoteScore(Player.A);
 
-            var playerAScore = game.GetScore(Player.A);
-            var playerBScore = game.GetScore(Player.B);
-
-            Assert.Equal(Score.Won, playerAScore);
-            Assert.Equal(Score.Forty, playerBScore);
+            var score = game.GetGameScore();
+            Assert.Equal(Score.Won, score.PlayerA);
+            Assert.Equal(Score.Forty, score.PlayerB);
         }
     }
 }

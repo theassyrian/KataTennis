@@ -5,22 +5,19 @@ namespace KataTennis
 {
     public class TennisGame
     {
-        readonly TennisGameState _state;
+        readonly TennisGameScore _score;
 
         public TennisGame()
-            : this(new TennisGameState())
         {
+            _score = new TennisGameScore();
         }
 
-        public TennisGame(TennisGameState state)
+        public TennisGame(TennisGameScore score)
         {
-            _state = state;
+            _score = new TennisGameScore(score);
         }
 
-        public Score GetScore(Player player) 
-        {
-            return GetPlayerScore(player);
-        }
+        public TennisGameScore GetGameScore() => new TennisGameScore(_score);
 
         public void PromoteScore(Player player)
         {
@@ -55,7 +52,7 @@ namespace KataTennis
 
         private Score GetOtherPlayerScore(Player player) => GetScore(() => player != Player.A);
 
-        private Score GetScore(Func<bool> isPlayerA) => isPlayerA() ? _state.PlayerA : _state.PlayerB;
+        private Score GetScore(Func<bool> isPlayerA) => isPlayerA() ? _score.PlayerA : _score.PlayerB;
         
         private void SetPlayerScore(Player player, int score) => SetPlayerScore(player, (Score)score);
 
@@ -66,9 +63,9 @@ namespace KataTennis
         private void SetScore(Func<bool> isPlayerA, Score score)
         {
             if(isPlayerA())
-                _state.PlayerA = score;
+                _score.PlayerA = score;
             else
-                _state.PlayerB = score;
+                _score.PlayerB = score;
         }
 
         private bool IsFinishing(Score score) => score >= Score.Forty;
