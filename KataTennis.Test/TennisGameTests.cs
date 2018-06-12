@@ -20,7 +20,7 @@ namespace KataTennis.Test
         [Theory]
         [InlineData(Score.Fifteen, Score.Forty)]
         [InlineData(Score.Love, Score.Thirty)]
-        [InlineData(Score.Forty, Score.Advantage)]
+        [InlineData(Score.Forty, Score.FortyWithAdvantage)]
         public void GetScore_PlayerScoreFromData_ReturnCorrectly(Score playerA, Score playerB)
         {
             var game = CreateGame(playerA: playerA, playerB: playerB);
