@@ -42,8 +42,8 @@ namespace KataTennis.Test
             var playerAScore = game.GetScore(Player.A);
             var playerBScore = game.GetScore(Player.B);
 
-            Assert.Equal(playerAScore, Score.Fifteen);
-            Assert.Equal(playerBScore, Score.Love);
+            Assert.Equal(Score.Fifteen, playerAScore);
+            Assert.Equal(Score.Love, playerBScore);
         }
         
         [Fact]
@@ -56,8 +56,8 @@ namespace KataTennis.Test
             var playerAScore = game.GetScore(Player.A);
             var playerBScore = game.GetScore(Player.B);
 
-            Assert.Equal(playerAScore, Score.Love);
-            Assert.Equal(playerBScore, Score.Fifteen);
+            Assert.Equal(Score.Love, playerAScore);
+            Assert.Equal(Score.Fifteen, playerBScore);
         }
         
         [Theory]
@@ -85,8 +85,8 @@ namespace KataTennis.Test
             var playerAScore = game.GetScore(Player.A);
             var playerBScore = game.GetScore(Player.B);
 
-            Assert.Equal(playerAScore, Score.FortyWithAdvantage);
-            Assert.Equal(playerBScore, Score.Forty);
+            Assert.Equal(Score.FortyWithAdvantage, playerAScore);
+            Assert.Equal(Score.Forty, playerBScore);
         }
         
         [Fact]
@@ -99,8 +99,8 @@ namespace KataTennis.Test
             var playerAScore = game.GetScore(Player.A);
             var playerBScore = game.GetScore(Player.B);
 
-            Assert.Equal(playerAScore, Score.FortyWithAdvantage);
-            Assert.Equal(playerBScore, Score.Forty);
+            Assert.Equal(Score.FortyWithAdvantage, playerAScore);
+            Assert.Equal(Score.Forty, playerBScore);
         }
         
         [Fact]
@@ -113,8 +113,8 @@ namespace KataTennis.Test
             var playerAScore = game.GetScore(Player.A);
             var playerBScore = game.GetScore(Player.B);
 
-            Assert.Equal(playerAScore, Score.Won);
-            Assert.Equal(playerBScore, Score.Forty);
+            Assert.Equal(Score.Won, playerAScore);
+            Assert.Equal(Score.Forty, playerBScore);
         }
     }
 }
