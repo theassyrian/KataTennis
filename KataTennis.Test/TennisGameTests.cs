@@ -19,7 +19,7 @@ namespace KataTennis.Test
         [Theory]
         [InlineData(Score.Fifteen, Score.Forty)]
         [InlineData(Score.Love, Score.Thirty)]
-        [InlineData(Score.Forty, Score.FortyWithAdvantage)]
+        [InlineData(Score.Forty, Score.Won)]
         public void GetScore_GameInInlineDataState_GetsInlineDatatState(Score playerA, Score playerB)
         {
             var game = TestGameFactory.Create(playerA: playerA, playerB: playerB);
@@ -70,33 +70,45 @@ namespace KataTennis.Test
         }
         
         [Fact]
-        public void PromoteScore_GameInFortyFortyState_PromotesPlayerToFortyWithAdvantageState()
+        public void PromoteScore_GameInThirtyFourtyState_PromotesPlayerToDeuceState()
         {
-            var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.Forty);
+            var game = TestGameFactory.Create(playerA: Score.Thirty, playerB: Score.Forty);
 
             game.PromoteScore(Player.A);
 
             var score = game.GetGameScore();
-            Assert.Equal(Score.FortyWithAdvantage, score.PlayerA);
-            Assert.Equal(Score.Forty, score.PlayerB);
+            Assert.Equal(Score.Deuce, score.PlayerA);
+            Assert.Equal(Score.Deuce, score.PlayerB);
         }
         
         [Fact]
-        public void PromoteScore_GameInFortyFortyWithAdvantageState_SwitchesPlayerState()
+        public void PromoteScore_GameInDeuceState_PromotesPlayerToAdvantageState()
         {
-            var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.FortyWithAdvantage);
+            var game = TestGameFactory.Create(playerA: Score.Deuce, playerB: Score.Deuce);
 
             game.PromoteScore(Player.A);
 
             var score = game.GetGameScore();
-            Assert.Equal(Score.FortyWithAdvantage, score.PlayerA);
-            Assert.Equal(Score.Forty, score.PlayerB);
+            Assert.Equal(Score.Advantage, score.PlayerA);
+            Assert.Equal(Score.Deuce, score.PlayerB);
         }
         
         [Fact]
-        public void PromoteScore_GameInFortyWithAdvantageFortyState_PromotesPlayerToWonState()
+        public void PromoteScore_GameInAdvantageState_SwitchesPlayerState()
         {
-            var game = TestGameFactory.Create(playerA: Score.FortyWithAdvantage, playerB: Score.Forty);
+            var game = TestGameFactory.Create(playerA: Score.Deuce, playerB: Score.Advantage);
+
+            game.PromoteScore(Player.A);
+
+            var score = game.GetGameScore();
+            Assert.Equal(Score.Advantage, score.PlayerA);
+            Assert.Equal(Score.Deuce, score.PlayerB);
+        }
+        
+        [Fact]
+        public void PromoteScore_GameInAdvantageDeuceState_PromotesPlayerToWonAndFortyState()
+        {
+            var game = TestGameFactory.Create(playerA: Score.Advantage, playerB: Score.Deuce);
 
             game.PromoteScore(Player.A);
 

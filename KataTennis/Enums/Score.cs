@@ -6,7 +6,8 @@ namespace KataTennis
         Fifteen = 1,
         Thirty = 2,
         Forty = 3,
-        FortyWithAdvantage = 4,
-        Won = 5
+        Deuce = 4,
+        Advantage = 5,
+        Won = 6
     }
 }

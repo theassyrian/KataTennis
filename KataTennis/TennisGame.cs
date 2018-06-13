@@ -25,21 +25,26 @@ namespace KataTennis
         {
             if (IsFinishing(player))
             {
-                PromoteInFinishingStage(player);
+                PromoteInFinishingGamePlay(player);
             }
             else
             {
-                PromoteInRegularStage(player);
+                PromoteInRegularGamePlay(player);
             }
         }
 
-        void PromoteInFinishingStage(Player player)
+        void PromoteInFinishingGamePlay(Player player)
         {
             var otherPlayer = GetOtherPlayer(player);
-
-            if (!IsFinishingWithAdvantage(player) && IsFinishing(otherPlayer))
+            
+            if (IsDeuce(player))
             {
-                SetPlayerScore(player, Score.FortyWithAdvantage);
+                SetPlayerScore(player, Score.Advantage);
+                SetPlayerScore(otherPlayer, Score.Deuce);
+            }
+            else if (IsAdvantage(player))
+            {
+                SetPlayerScore(player, Score.Won);
                 SetPlayerScore(otherPlayer, Score.Forty);
             }
             else
@@ -48,7 +53,18 @@ namespace KataTennis
             }
         }
 
-        void PromoteInRegularStage(Player player) => SetPlayerScore(player, GetPlayerScore(player) + 1);
+        void PromoteInRegularGamePlay(Player player)
+        {
+            var otherPlayer = GetOtherPlayer(player);
+            
+            SetPlayerScore(player, GetPlayerScore(player) + 1);
+            
+            if (IsForty(player) && IsForty(otherPlayer))
+            {
+                SetPlayerScore(player, Score.Deuce);
+                SetPlayerScore(otherPlayer, Score.Deuce);
+            }
+        }
 
         Player GetOtherPlayer(Player player) => player != Player.A ? Player.A : Player.B;
 
@@ -61,9 +77,13 @@ namespace KataTennis
             else
                 _score.PlayerB = score;
         }
-
-        bool IsFinishingWithAdvantage(Player player) => GetPlayerScore(player) >= Score.FortyWithAdvantage;
-
+        
         bool IsFinishing(Player player) => GetPlayerScore(player) >= Score.Forty;
+
+        bool IsAdvantage(Player player) => GetPlayerScore(player) == Score.Advantage;
+        
+        bool IsDeuce(Player player) => GetPlayerScore(player) == Score.Deuce;
+
+        bool IsForty(Player player) => GetPlayerScore(player) == Score.Forty;
     }
 }
