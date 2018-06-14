@@ -12,20 +12,24 @@ namespace KataTennis.Test
             
             var score = game.GetGameScore();
 
+            Assert.Equal(State.Normal, score.GameState);
             Assert.Equal(Score.Love, score.PlayerA);
             Assert.Equal(Score.Love, score.PlayerB);
         }
         
         [Theory]
-        [InlineData(Score.Fifteen, Score.Forty)]
-        [InlineData(Score.Love, Score.Thirty)]
-        [InlineData(Score.Forty, Score.Won)]
-        public void GetScore_GameInInlineDataState_GetsInlineDatatState(Score playerA, Score playerB)
+        [InlineData(Score.Fifteen, Score.Forty, State.Normal)]
+        [InlineData(Score.Love, Score.Thirty, State.Normal)]
+        [InlineData(Score.Forty, Score.Forty, State.Deuce)]
+        [InlineData(Score.FortyWithAdvantage, Score.Forty, State.Advantage)]
+        [InlineData(Score.Forty, Score.Won, State.Won)]
+        public void GetScore_GameInInlineDataState_GetsInlineDatatState(Score playerA, Score playerB, State state)
         {
             var game = TestGameFactory.Create(playerA: playerA, playerB: playerB);
 
             var score = game.GetGameScore();
             
+            Assert.Equal(state, score.GameState);
             Assert.Equal(playerA, score.PlayerA);
             Assert.Equal(playerB, score.PlayerB);
         }
@@ -70,49 +74,53 @@ namespace KataTennis.Test
         }
         
         [Fact]
-        public void PromoteScore_GameInThirtyFourtyState_PromotesPlayerToDeuceState()
+        public void PromoteScore_GameInThirtyFourtyState_PromotesGameToDeuceState()
         {
             var game = TestGameFactory.Create(playerA: Score.Thirty, playerB: Score.Forty);
 
             game.PromoteScore(Player.A);
 
             var score = game.GetGameScore();
-            Assert.Equal(Score.Deuce, score.PlayerA);
-            Assert.Equal(Score.Deuce, score.PlayerB);
+            Assert.Equal(State.Deuce, score.GameState);
+            Assert.Equal(Score.Forty, score.PlayerA);
+            Assert.Equal(Score.Forty, score.PlayerB);
         }
         
         [Fact]
-        public void PromoteScore_GameInDeuceState_PromotesPlayerToAdvantageState()
+        public void PromoteScore_GameInDeuceState_PromotesPlayerAndGameToAdvantageState()
         {
-            var game = TestGameFactory.Create(playerA: Score.Deuce, playerB: Score.Deuce);
+            var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.Forty);
 
             game.PromoteScore(Player.A);
 
             var score = game.GetGameScore();
-            Assert.Equal(Score.Advantage, score.PlayerA);
-            Assert.Equal(Score.Deuce, score.PlayerB);
+            Assert.Equal(State.Advantage, score.GameState);
+            Assert.Equal(Score.FortyWithAdvantage, score.PlayerA);
+            Assert.Equal(Score.Forty, score.PlayerB);
         }
         
         [Fact]
         public void PromoteScore_GameInAdvantageState_SwitchesPlayerState()
         {
-            var game = TestGameFactory.Create(playerA: Score.Deuce, playerB: Score.Advantage);
+            var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.FortyWithAdvantage);
 
             game.PromoteScore(Player.A);
 
             var score = game.GetGameScore();
-            Assert.Equal(Score.Advantage, score.PlayerA);
-            Assert.Equal(Score.Deuce, score.PlayerB);
+            Assert.Equal(State.Advantage, score.GameState);
+            Assert.Equal(Score.FortyWithAdvantage, score.PlayerA);
+            Assert.Equal(Score.Forty, score.PlayerB);
         }
         
         [Fact]
         public void PromoteScore_GameInAdvantageDeuceState_PromotesPlayerToWonAndFortyState()
         {
-            var game = TestGameFactory.Create(playerA: Score.Advantage, playerB: Score.Deuce);
+            var game = TestGameFactory.Create(playerA: Score.FortyWithAdvantage, playerB: Score.Forty);
 
             game.PromoteScore(Player.A);
 
             var score = game.GetGameScore();
+            Assert.Equal(State.Won, score.GameState);
             Assert.Equal(Score.Won, score.PlayerA);
             Assert.Equal(Score.Forty, score.PlayerB);
         }

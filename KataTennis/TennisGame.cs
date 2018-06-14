@@ -17,7 +17,20 @@ namespace KataTennis
             _score = new TennisGameScore(score);
         }
 
-        public override string ToString() => $"Player A: {_score.PlayerA} - Player B: {_score.PlayerB}";
+        public override string ToString()
+        {
+            string Name(Score score)
+            {
+                if (score == Score.FortyWithAdvantage)
+                {
+                    return "Forty (Advantage)";
+                }
+
+                return Enum.GetName(typeof(Score), score);
+            }
+
+            return  $"Player A: {Name(_score.PlayerA)} - Player B: {Name(_score.PlayerB)} - Game: {_score.GameState}";
+        }
 
         public TennisGameScore GetGameScore() => new TennisGameScore(_score);
 
@@ -37,14 +50,13 @@ namespace KataTennis
         {
             var otherPlayer = GetOtherPlayer(player);
             
-            if (IsDeuce(player))
-            {
-                SetPlayerScore(player, Score.Advantage);
-                SetPlayerScore(otherPlayer, Score.Deuce);
-            }
-            else if (IsAdvantage(player))
+            if (IsFortyWithAdvantage(player))
             {
                 SetPlayerScore(player, Score.Won);
+            }
+            else if (IsFinishing(otherPlayer))
+            {
+                SetPlayerScore(player, Score.FortyWithAdvantage);
                 SetPlayerScore(otherPlayer, Score.Forty);
             }
             else
@@ -58,12 +70,6 @@ namespace KataTennis
             var otherPlayer = GetOtherPlayer(player);
             
             SetPlayerScore(player, GetPlayerScore(player) + 1);
-            
-            if (IsForty(player) && IsForty(otherPlayer))
-            {
-                SetPlayerScore(player, Score.Deuce);
-                SetPlayerScore(otherPlayer, Score.Deuce);
-            }
         }
 
         Player GetOtherPlayer(Player player) => player != Player.A ? Player.A : Player.B;
@@ -80,9 +86,7 @@ namespace KataTennis
         
         bool IsFinishing(Player player) => GetPlayerScore(player) >= Score.Forty;
 
-        bool IsAdvantage(Player player) => GetPlayerScore(player) == Score.Advantage;
-        
-        bool IsDeuce(Player player) => GetPlayerScore(player) == Score.Deuce;
+        bool IsFortyWithAdvantage(Player player) => GetPlayerScore(player) == Score.FortyWithAdvantage;
 
         bool IsForty(Player player) => GetPlayerScore(player) == Score.Forty;
     }
