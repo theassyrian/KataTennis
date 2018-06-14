@@ -124,5 +124,13 @@ namespace KataTennis.Test
             Assert.Equal(Score.Won, score.PlayerA);
             Assert.Equal(Score.Forty, score.PlayerB);
         }
+        
+        [Fact]
+        public void PromoteScore_GameInWonState_ThrowsExceptionWhenPromote()
+        {
+            var game = TestGameFactory.Create(playerA: Score.Won, playerB: Score.Forty);
+
+            Assert.Throws<InvalidOperationException>(() => game.PromoteScore(Player.A));
+        }
     }
 }

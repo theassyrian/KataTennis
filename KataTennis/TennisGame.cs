@@ -36,6 +36,8 @@ namespace KataTennis
 
         public void PromoteScore(Player player)
         {
+            CheckIfGameFinished();
+
             if (IsFinishing(player))
             {
                 PromoteInFinishingGamePlay(player);
@@ -70,6 +72,12 @@ namespace KataTennis
             var otherPlayer = GetOtherPlayer(player);
             
             SetPlayerScore(player, GetPlayerScore(player) + 1);
+        }
+
+        void CheckIfGameFinished()
+        {
+            if(_score.GameState == State.Won)
+                throw new InvalidOperationException();
         }
 
         Player GetOtherPlayer(Player player) => player != Player.A ? Player.A : Player.B;
