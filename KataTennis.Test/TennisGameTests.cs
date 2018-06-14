@@ -100,7 +100,7 @@ namespace KataTennis.Test
         }
         
         [Fact]
-        public void PromoteScore_GameInAdvantageState_SwitchesPlayerState()
+        public void PromoteScore_GameInFortyAdvantageState_SwitchesPlayerState()
         {
             var game = TestGameFactory.Create(playerA: Score.Forty, playerB: Score.FortyWithAdvantage);
 
@@ -113,7 +113,7 @@ namespace KataTennis.Test
         }
         
         [Fact]
-        public void PromoteScore_GameInAdvantageDeuceState_PromotesPlayerToWonAndFortyState()
+        public void PromoteScore_GameInAdvantageFortyState_PromotesPlayerToWonAndFortyState()
         {
             var game = TestGameFactory.Create(playerA: Score.FortyWithAdvantage, playerB: Score.Forty);
 
